@@ -23,14 +23,21 @@ void belmanFord(int s, int t, int n, int** G, int *dist, int *pais)
     dist[s] = 0;
     for(int i = s; i < n ; i++){
         for (int j = 1; j <= t ; j ++){
-            
             if(G[i][j] != INT_MAX){
-            
                 if(dist[j] > G[i][j] + dist[i]){
                     //cout << "vertice atual " << i << "; vizinho " << j << endl;
                     dist[j] = G[i][j] + dist[i];
                     //cout << "distancia do atual " << i << " a " << j << ": " << dist[j] << endl;
                     pais[j] = i;
+                }
+            }
+        }
+    }
+    for(int i = s; i < n ; i++){
+        for (int j = 1; j <= t ; j ++){
+            if(G[i][j] != INT_MAX){
+                if(dist[j] > G[i][j] + dist[i]){
+                    cout<<"ciclo negativo detectado"<< endl;
                 }
             }
         }
