@@ -1,13 +1,13 @@
-> # BelmanFord
+> ## BelmanFord
   repositorio criado para apresentar algoritmo para ab2 da disciplina de teoria dos grafos.
-> ## Como compilar?
+> ### Como compilar?
   utilize o comando Make para compilar, certifique-se de que tenha o necessário instalado.
-> ## Parâmetros aceitos:
+> ### Parâmetros aceitos:
      use -f <arquivo> para entrada de um grafo utilizando uma matriz de incidencia.
      use -o <arquivo> para redirecionar saida para arquivo.
      use -s para exibir solucao ordenada.
      use -i <vertInicial> para indicar vertice inicial.
      use -l <vertFinal> para indicar vertice final.
-> ## O que o Algoritmo faz?
+> ### O que o Algoritmo faz?
   O algoritmo de belmanFord consegue retornar os caminhos minimo de um grafo direcionado e não direcionado com pesos tanto positivos como negativos. De acordo com os parâmetros de entrada a saída pode ser com a soma dos pesos ou uma sequência ordenada com o peso para cada vértice.
-> ## Use o arquivo exemplo.txt como entrada de exemplo.
+> ### Use o arquivo exemplo.txt como entrada de exemplo.
