@@ -11,21 +11,19 @@
 using namespace std;
 
 
-void belmanFord(int s, int t, int n, int** G, int *dist, int *pais)
+bool belmanFord(int verticeInicial, int verticeFinal, int n, int** G, int *dist, int *pais)
 {
   // inicializa d e p
-    for (int i = s; i <= t; i++)
+    for (int i = verticeInicial; i <= verticeFinal; i++)
     {
         dist[i] = 100000;
         pais[i]= -1;
         //cout << dist.at(i) << pais.at(i) <<endl;
     }
-    dist[s] = 0;
-    for(int i = s; i < n ; i++){
-        for (int j = 1; j <= t ; j ++){
-            
+    dist[verticeInicial] = 0;
+    for(int i = verticeInicial; i <= verticeFinal ; i++){
+        for (int j = 1; j <= verticeFinal ; j ++){
             if(G[i][j] != INT_MAX){
-            
                 if(dist[j] > G[i][j] + dist[i]){
                     //cout << "vertice atual " << i << "; vizinho " << j << endl;
                     dist[j] = G[i][j] + dist[i];
@@ -35,28 +33,40 @@ void belmanFord(int s, int t, int n, int** G, int *dist, int *pais)
             }
         }
     }
-    return;
+    for(int i = verticeInicial; i < n ; i++){
+        for (int j = 1; j <= verticeFinal ; j ++){
+            if(G[i][j] != INT_MAX){
+                if(dist[j] > G[i][j] + dist[i]){
+                  cout<<"ciclo negativo detectado"<< endl;
+                  return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 
-void solutions(bool saida, string nomeSaida, bool solucao, int s, int t, int** G, int n){
-    int dist[t];
-    int pais[t];
+void solutions(bool saida, string nomeSaida, bool solucao, int verticeInicial, int verticeFinal, int** G, int n){
+    int dist[n];
+    int pais[n];
     //vector<int> *ptrDist = &dist;
     //vector<int> *ptrPais = &pais;
-    belmanFord(s, t, n, G, &dist[0], &pais[0]);
+    if (belmanFord(verticeInicial, verticeFinal, n, G, &dist[0], &pais[0])){
+      return;
+    };
     if (saida && solucao){
     // escreve a saida das distancias ordenadas num arquivo txt
         ofstream out;
         out.open(nomeSaida, ofstream::out);
-        for (int i = s; i <= t; i++)
+        for (int i = verticeInicial; i <= verticeFinal; i++)
         {
-          if(i == s){
-            out << "raiz " << i << endl;
+          if(i == verticeInicial){
+            out << "Exibindo todos os vertices e distancias atingiveis por " << i << endl;
           }else if (pais[i] == -1){
-            out << "nao existe caminho" << endl;
+            out << "Nao existe caminho partindo de " << verticeInicial << " que atinja " << i << endl;
           }else{
-            out << "menor peso de " << s <<" a "<< i <<": "<< dist[i] << endl;
+            out << "De " << verticeInicial <<" -> "<< i <<" = "<< dist[i]  << " | pai = " << pais[i] << endl;
           }
         }
         out.close();
@@ -67,33 +77,33 @@ void solutions(bool saida, string nomeSaida, bool solucao, int s, int t, int** G
         ofstream out;
         out.open(nomeSaida, ofstream::out);
         int sumCaminho=0;
-        for(int i = s; i <= t; i++){
+        for(int i = verticeInicial; i <= verticeFinal; i++){
           if(dist[i] == 100000){
             continue;
           }else{
             sumCaminho = dist[i];
           }
         }
-        out << "peso do menor caminho: "<< sumCaminho << endl;
+        out << "Peso do menor caminho do vertice " <<verticeInicial << " ate o " << verticeFinal << " = "<< sumCaminho << " | Pai do vertice final = " << pais[verticeFinal] <<  endl;
         out.close();
         return;
     }
     if(solucao){
     // exibe no terminal as distancias ordenadas de cada aresta
-      for(int i = s; i <= t; i++){
-        if(i == s){
-          cout << "raiz " << i << endl;
+      for(int i = verticeInicial; i <= verticeFinal; i++){
+        if(i == verticeInicial){
+          cout << "Exibindo todos os vertices e distancias atingiveis por " << i << endl;
         }else if (pais[i] == -1){
-          cout << "nao existe caminho" << endl;
+          cout << "Nao existe caminho partindo de " << verticeInicial << " que atinja " << i << endl;
         }else{
-          cout << "menor peso de " << s <<" a "<< i <<": "<< dist[i] << endl;
+          cout << "De " << verticeInicial <<" -> "<< i <<" = "<< dist[i]  << " | pai = " << pais[i] << endl;
         }
       }
     return;
     }
     // exibe no terminal o peso do menor caminho
     int sumCaminho=0;
-    for(int i = s; i <= t; i++){
+    for(int i = verticeInicial; i <= verticeFinal; i++){
       if(dist[i] == 100000){
         continue;
       }else{
@@ -102,7 +112,7 @@ void solutions(bool saida, string nomeSaida, bool solucao, int s, int t, int** G
       }
     }
     
-    cout << "peso do menor caminho: "<< sumCaminho << endl;
+    cout << "Peso do menor caminho do vertice " <<verticeInicial << " ate o " << verticeFinal << " = "<< sumCaminho << " | Pai do vertice final = " << pais[verticeFinal] <<  endl;
     return;
 }
 
@@ -123,8 +133,8 @@ int main(int argc, char const *argv[]){
   string opSaida = "-o";
   string nomeSaida;
   bool saida = false;
-  int s = 1;
-  int t = 999;
+  int verticeInicial = 1;
+  int verticeFinal = 999;
   int** G;
   int n;
 
@@ -150,8 +160,8 @@ int main(int argc, char const *argv[]){
       
       // Usamos +1 pra acessar os vértices pelos seus números. Deixaremos a primeira linha e primeira colunas sem usar.
       G = new int* [qtd_ares+1];
-      n = qtd_ares+1;
-      t = qtd_vert+1;
+      n = qtd_vert+1;
+      verticeFinal = n -1;
       for (int y = 0; y <qtd_ares+1; y++){
         G[y] = new int [qtd_ares+1];
       }
@@ -195,23 +205,23 @@ int main(int argc, char const *argv[]){
 
     if (argv[i] == opInicial){
       inicial = true;
-      s = stoi(argv[i+1]);
+      verticeInicial = stoi(argv[i+1]);
     }
 
     if (argv[i] == opFinal){
       final = true;
-      t = stoi(argv[i+1]);
+      verticeFinal = stoi(argv[i+1]);
     }
 
     if (argv[i] == opSaida){
     	saida = true;
-        nomeSaida = argv[i+1];
+      nomeSaida = argv[i+1];
     }
     if(argv[i]== opSolucao){
-        solucao = true;
+      solucao = true;
     }
   }
 
-  solutions(saida, nomeSaida, solucao, s, t, G, n);
+  solutions(saida, nomeSaida, solucao, verticeInicial, verticeFinal, G, n);
   free(G);
 }
