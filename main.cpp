@@ -62,11 +62,11 @@ void solutions(bool saida, string nomeSaida, bool solucao, int verticeInicial, i
         for (int i = verticeInicial; i <= verticeFinal; i++)
         {
           if(i == verticeInicial){
-            out << "raiz " << i << endl;
+            out << "Exibindo todos os vertices e distancias atingiveis por " << i << endl;
           }else if (pais[i] == -1){
-            out << "nao existe caminho partindo de " << verticeInicial << " que atinja " << i << endl;
+            out << "Nao existe caminho partindo de " << verticeInicial << " que atinja " << i << endl;
           }else{
-            out << "peso de " << verticeInicial <<" a "<< i <<": "<< dist[i] << endl;
+            out << "De " << verticeInicial <<" -> "<< i <<" = "<< dist[i]  << " | pai = " << pais[i] << endl;
           }
         }
         out.close();
@@ -84,7 +84,7 @@ void solutions(bool saida, string nomeSaida, bool solucao, int verticeInicial, i
             sumCaminho = dist[i];
           }
         }
-        out << "peso do menor caminho do vertice " <<verticeInicial << " ate o " << verticeFinal << ":"<< sumCaminho << endl;
+        out << "Peso do menor caminho do vertice " <<verticeInicial << " ate o " << verticeFinal << " = "<< sumCaminho << " | Pai do vertice final = " << pais[verticeFinal] <<  endl;
         out.close();
         return;
     }
@@ -92,11 +92,11 @@ void solutions(bool saida, string nomeSaida, bool solucao, int verticeInicial, i
     // exibe no terminal as distancias ordenadas de cada aresta
       for(int i = verticeInicial; i <= verticeFinal; i++){
         if(i == verticeInicial){
-          cout << "raiz " << i << endl;
+          cout << "Exibindo todos os vertices e distancias atingiveis por " << i << endl;
         }else if (pais[i] == -1){
-          cout << "nao existe caminho partindo de " << verticeInicial << " que atinja " << i << endl;
+          cout << "Nao existe caminho partindo de " << verticeInicial << " que atinja " << i << endl;
         }else{
-          cout << "peso de " << verticeInicial <<" a "<< i <<": "<< dist[i] << endl;
+          cout << "De " << verticeInicial <<" -> "<< i <<" = "<< dist[i]  << " | pai = " << pais[i] << endl;
         }
       }
     return;
@@ -112,7 +112,7 @@ void solutions(bool saida, string nomeSaida, bool solucao, int verticeInicial, i
       }
     }
     
-    cout << "peso do menor caminho do vertice " <<verticeInicial << " ate o " << verticeFinal << ":"<< sumCaminho << endl;
+    cout << "Peso do menor caminho do vertice " <<verticeInicial << " ate o " << verticeFinal << " = "<< sumCaminho << " | Pai do vertice final = " << pais[verticeFinal] <<  endl;
     return;
 }
 
