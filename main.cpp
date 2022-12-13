@@ -14,36 +14,33 @@ using namespace std;
 bool belmanFord(int verticeInicial, int verticeFinal, int n, int** G, int *dist, int *pais)
 {
   // inicializa d e p
-    for (int i = verticeInicial; i <= verticeFinal; i++)
-    {
-        dist[i] = 100000;
-        pais[i]= -1;
-        //cout << dist.at(i) << pais.at(i) <<endl;
+  for (int i = verticeInicial; i <= verticeFinal; i++)
+  {
+    dist[i] = 100000;
+    pais[i]= -1;
+    //cout << dist.at(i) << pais.at(i) <<endl;
+  }
+  dist[verticeInicial] = 0;
+  for(int i = verticeInicial; i <= verticeFinal ; i++){
+    for (int j = verticeInicial + 1; j <= verticeFinal ; j ++){
+      if(G[i][j] != INT_MAX && dist[j] > G[i][j] + dist[i]){
+        
+        //cout << "vertice atual " << i << "; vizinho " << j << endl;
+        dist[j] = G[i][j] + dist[i];
+        //cout << "distancia do atual " << i << " a " << j << ": " << dist[j] << endl;
+        pais[j] = i;
+      }
     }
-    dist[verticeInicial] = 0;
-    for(int i = verticeInicial; i <= verticeFinal ; i++){
-        for (int j = 1; j <= verticeFinal ; j ++){
-            if(G[i][j] != INT_MAX){
-                if(dist[j] > G[i][j] + dist[i]){
-                    //cout << "vertice atual " << i << "; vizinho " << j << endl;
-                    dist[j] = G[i][j] + dist[i];
-                    //cout << "distancia do atual " << i << " a " << j << ": " << dist[j] << endl;
-                    pais[j] = i;
-                }
-            }
-        }
+  }
+  for(int i = verticeInicial; i < n ; i++){
+    for (int j = verticeInicial + 1; j <= verticeFinal ; j ++){
+      if(G[i][j] != INT_MAX && dist[j] > G[i][j] + dist[i]){  
+        cout<<"ciclo negativo detectado"<< endl;
+        return true;
+      }
     }
-    for(int i = verticeInicial; i < n ; i++){
-        for (int j = 1; j <= verticeFinal ; j ++){
-            if(G[i][j] != INT_MAX){
-                if(dist[j] > G[i][j] + dist[i]){
-                  cout<<"ciclo negativo detectado"<< endl;
-                  return true;
-                }
-            }
-        }
-    }
-    return false;
+  }
+  return false;
 }
 
 
